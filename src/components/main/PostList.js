@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { PostStateContext } from "../../contexts/postContext";
+import { PostStateContext, usePostState } from "../../contexts/postContext";
 import Button from "../common/Button";
 import TitleBox from "../common/TitleBox";
 import PostItem from "./PostItem";
@@ -14,7 +14,7 @@ const Block = styled.div`
 `;
 
 function PostList() {
-  const postList = useContext(PostStateContext);
+  const postList = usePostState();
   const navigate = useNavigate();
   console.log(postList);
 

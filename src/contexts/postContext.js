@@ -1,5 +1,5 @@
 // createContext, useContext, useReducer
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer, useRef } from "react";
 
 const postList = [
   {
@@ -24,9 +24,6 @@ const postList = [
   },
 ];
 
-export const PostStateContext = createContext(null);
-export const PostDispatchContext = createContext(null);
-
 function reducer(state, action) {
   switch (action.type) {
     case "CREATE_POST":
@@ -40,14 +37,45 @@ function reducer(state, action) {
   }
 }
 
+const PostStateContext = createContext(null);
+const PostDispatchContext = createContext(null);
+const PostNextIdContext = createContext(null);
+
 export function PostProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, postList);
+  const nextId = useRef(3);
 
   return (
     <PostStateContext.Provider value={state}>
       <PostDispatchContext.Provider value={dispatch}>
-        {children}
+        <PostNextIdContext.Provider value={nextId}>
+          {children}
+        </PostNextIdContext.Provider>
       </PostDispatchContext.Provider>
     </PostStateContext.Provider>
   );
+}
+
+export function usePostState() {
+  const context = useContext(PostStateContext);
+  if (!context) {
+    throw new Error("프로바이더 어디감");
+  }
+  return context;
+}
+
+export function usePostDispatch() {
+  const context = useContext(PostDispatchContext);
+  if (!context) {
+    throw new Error("프로바이더 어디감");
+  }
+  return context;
+}
+
+export function usePostNexId() {
+  const context = useContext(PostNextIdContext);
+  if (!context) {
+    throw new Error("프로바이더 어디감");
+  }
+  return context;
 }

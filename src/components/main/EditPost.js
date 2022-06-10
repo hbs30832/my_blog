@@ -4,6 +4,9 @@ import styled from "styled-components";
 import {
   PostDispatchContext,
   PostStateContext,
+  usePostDispatch,
+  usePostNexId,
+  usePostState,
 } from "../../contexts/postContext";
 import Button from "../common/Button";
 import TitleBox from "../common/TitleBox";
@@ -48,9 +51,9 @@ const dateOpts = {
 
 function EidtPost() {
   const { id } = useParams();
-  const postList = useContext(PostStateContext);
-  const lastId = postList[postList.length - 1].id;
-  const dispatch = useContext(PostDispatchContext);
+  const postList = usePostState();
+  const nextId = usePostNexId();
+  const dispatch = usePostDispatch();
   const navigate = useNavigate();
 
   const post = postList.filter((post) => post.id === parseInt(id))[0] || {
@@ -80,12 +83,13 @@ function EidtPost() {
     dispatch({
       type: "CREATE_POST",
       post: {
-        id: lastId + 1,
+        id: nextId.current,
         title,
         content,
         created_at,
       },
     });
+    nextId.current++;
     navigate("/post");
   };
 

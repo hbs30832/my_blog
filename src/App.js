@@ -22,11 +22,13 @@ const style = {
 
 function App() {
   return (
-    <div style={style}>
-      <GlobalStyle />
-      <SidebarTemplate />
-      <MainSection />
-    </div>
+    <PostProvider>
+      <div style={style}>
+        <GlobalStyle />
+        <SidebarTemplate />
+        <MainSection />
+      </div>
+    </PostProvider>
   );
 }
 
