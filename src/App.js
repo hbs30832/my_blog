@@ -2,7 +2,18 @@ import SidebarTemplate from "./components/sidebar/SidebarTemplate";
 import { createGlobalStyle } from "styled-components";
 import "./reset.css";
 import MainSection from "./components/main/MainSection";
-import { PostProvider } from "./contexts/postContext";
+import { combineReducers } from "redux";
+import post from "./actions/post";
+import { configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
+
+const rootReducer = combineReducers({
+  post,
+});
+
+const store = configureStore({
+  reducer: rootReducer,
+});
 
 const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
@@ -22,13 +33,13 @@ const style = {
 
 function App() {
   return (
-    <PostProvider>
+    <Provider store={store}>
       <div style={style}>
         <GlobalStyle />
         <SidebarTemplate />
         <MainSection />
       </div>
-    </PostProvider>
+    </Provider>
   );
 }
 

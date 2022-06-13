@@ -1,15 +1,10 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import {
-  PostDispatchContext,
-  PostStateContext,
-  usePostDispatch,
-  usePostNexId,
-  usePostState,
-} from "../../contexts/postContext";
 import Button from "../common/Button";
 import TitleBox from "../common/TitleBox";
+import { useSelector, useDispatch } from "react-redux";
+import { createPost, updatePost } from "../../actions/post";
 
 const InputForm = styled.form`
   font-size: 21px;
@@ -50,13 +45,13 @@ const dateOpts = {
 };
 
 function EidtPost() {
-  const { id } = useParams();
-  const postList = usePostState();
-  const nextId = usePostNexId();
-  const dispatch = usePostDispatch();
+  const params = useParams();
+  const id = parseInt(params.id);
+  const postList = useSelector((state) => state.post);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const post = postList.filter((post) => post.id === parseInt(id))[0] || {
+  const post = postList.filter((post) => post.id === id)[0] || {
     title: "",
     content: "",
   };
@@ -80,27 +75,15 @@ function EidtPost() {
   const onCreate = () => {
     const { title, content } = inputs;
     const created_at = new Date().toLocaleDateString("ko-KR", dateOpts);
-    dispatch({
-      type: "CREATE_POST",
-      post: {
-        id: nextId.current,
-        title,
-        content,
-        created_at,
-      },
-    });
-    nextId.current++;
+    dispatch(createPost(title, content, created_at));
     navigate("/post");
   };
 
   const onEdit = () => {
     const { title, content } = inputs;
     const created_at = new Date().toLocaleDateString("ko-KR", dateOpts);
-    dispatch({
-      type: "EDIT_POST",
-      post: { ...post, title, content, created_at },
-    });
-    navigate("/post");
+    dispatch(updatePost(id, title, content, created_at));
+    navigate("/post/");
   };
 
   return (
@@ -109,7 +92,7 @@ function EidtPost() {
       <InputForm
         onSubmit={(e) => {
           e.preventDefault();
-          if (id === "write") {
+          if (isNaN(id)) {
             onCreate();
           } else {
             onEdit();
