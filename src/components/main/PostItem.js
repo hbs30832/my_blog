@@ -39,10 +39,15 @@ const BtnRemove = styled.button`
   }
 `;
 
-function PostItem({ post }) {
-  const { title, content, created_at, id } = post;
-  console.log(post);
+const dateOpts = {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+};
 
+function PostItem({ post }) {
+  const { title, content, createdAt, id } = post;
+  const dateStr = new Date(createdAt).toLocaleDateString("ko-KR", dateOpts);
   const dispatch = useDispatch();
 
   const onRemove = () => {
@@ -51,9 +56,10 @@ function PostItem({ post }) {
   return (
     <Block>
       <StyledLink to={`${id}`}>
+        {post.id}
         <h3>{title}</h3>
         <p>{content}</p>
-        <span>{created_at}</span>
+        <span>{dateStr}</span>
       </StyledLink>
       <BtnRemove onClick={onRemove}>삭제</BtnRemove>
     </Block>

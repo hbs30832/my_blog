@@ -4,15 +4,16 @@ import styled from "styled-components";
 import SidebarItem from "./SidebarItem";
 
 const Block = styled.div`
+  flex: 1;
   ul {
     padding: 50px 10px 0;
   }
 `;
 
 const sidemenu = [
-  { id: 1, text: "HOME", url: "/", active: true },
-  { id: 2, text: "ABOUT", url: "/about", active: false },
-  { id: 4, text: "POST", url: "/post", active: false },
+  { id: 1, text: "HOME", url: "/main", active: true },
+  { id: 2, text: "ABOUT", url: "/main/about", active: false },
+  { id: 4, text: "POST", url: "/main/post", active: false },
 ];
 
 function SidebarList() {

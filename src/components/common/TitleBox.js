@@ -7,8 +7,8 @@ const Title = styled.h2`
   margin-bottom: 50px;
 `;
 
-function TitleBox({ title }) {
-  return <Title>{title}</Title>;
+function TitleBox({ title, margin }) {
+  return <Title style={{ margin }}>{title}</Title>;
 }
 
 export default TitleBox;

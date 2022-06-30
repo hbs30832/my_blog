@@ -1,13 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import TitleBox from "../common/TitleBox";
 import { main_color, sub_color } from "../common/color";
 import { createComment } from "../../actions/post";
+import Button from "../common/Button";
 
 const CotentContainer = styled.div`
   max-width: 1000px;
+  background-image: url(${({ src }) => src}=>src);
 `;
 
 const ContentBox = styled.div`
@@ -59,14 +61,26 @@ function PostDetail() {
   const params = useParams("id");
   const id = parseInt(params.id);
   const postList = useSelector((state) => state.post);
-  const post = postList.filter((post) => post.id === id)[0];
+  const post = postList.find((post) => post.id === id);
   const comments = post.comments;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   console.log(comments);
 
   return (
-    <CotentContainer>
-      <TitleBox title={post.title} />
+    <CotentContainer src={require("../../images/yeji05.jpg")}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "50px",
+        }}
+      >
+        <TitleBox title={post.title} />
+        <Button text="수정하기" onClick={() => navigate("/post/edit/" + id)} />
+      </div>
+
       <ContentBox>
         <p>{post.content}</p>
       </ContentBox>

@@ -8,9 +8,7 @@ function Post() {
   return (
     <Routes>
       <Route path="/" element={<PostList />} />
-      {/* post/1 */}
       <Route path=":id" element={<PostDetail />} />
-      {/* post/eidt/write */}
       <Route path="/edit/:id" element={<EidtPost />} />
     </Routes>
   );
